@@ -1,0 +1,56 @@
+{% extends "global/Page.html" %}
+{% load staticfiles otree %}
+
+{% block title %}
+    Please complete the captcha below!
+{% endblock %}
+
+{% block content %}
+<script src='https://www.google.com/recaptcha/api.js'></script>
+    <div class="card card-body bg-light instructions">
+    <ul>
+        <li>Please complete the captcha below to continue.</li>
+    </ul>
+</div>
+<br>
+    <p></p>
+<form method="POST">
+      <div class="g-recaptcha" data-sitekey="{{ captcha_site_key }}"></div>
+      <br>
+      <button class="otree-btn-next btn btn-outline-primary" type="submit">Next</button>
+</form>
+
+{% endblock %}
+{% block scripts %}
+<script>
+    window.onload = function() {
+        var recaptcha = document.querySelector('#g-recaptcha-response');
+        recaptcha.required = true;
+        recaptcha.oninvalid = function(e) {
+            alert("Please complete the Captcha!");
+        }
+    }
+</script>
+<script>
+var xhr = new XMLHttpRequest();
+
+xhr.open("GET", "https://pro.ip-api.com/json/?fields=status,message,proxy&key={{pro_ip_api_key}}", true);
+
+xhr.onreadystatechange = function() {
+    if (this.readyState === 4 && this.status === 200) {
+        var response = JSON.parse(this.responseText);
+        if (response.status !== 'success') {
+            console.log('query failed: ' + response.message);
+            return
+        }
+        // Redirect
+        if (response.proxy === true) {
+            window.location.replace("{% static "screening/Proxy.html" %}");
+        }
+    } else if (this.readyState === 4 && this.status === 0) {
+        window.location.replace("{% static "screening/Adblock.html" %}");
+    }
+};
+xhr.send();
+</script>
+{% endblock %}
