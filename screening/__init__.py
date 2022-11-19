@@ -29,9 +29,8 @@ class Captcha(Page):
     @staticmethod
     def vars_for_template(player: Player):
         return dict(
-            participant_code=player.participant.label or player.participant.code,
-            captcha_site_key="6LcHjv8iAAAAAAt9h-yoVQ7VqezK1NHGMJwNnoIv",
-            pro_ip_api_key="05rqfk8VoTFZUuB"
+            captcha_site_key="ENTER CAPTCHA SITE KEY HERE",
+            pro_ip_api_key="ENTER PRO IP API KEY HERE"
         )
 
 
